@@ -18,10 +18,10 @@ function CalculateARV(inputParam, isDebug) {
 	InitCheckBoxInputSection(InputAVCalc.coins2);	
 	InitCheckBoxInputSection(InputAVCalc.omit2);	
 	
-	InitRangeInputSection(InputAVCalc.coinst);
-	InitRangeInputSection(InputAVCalc.copay);
-	InitRangeInputSection(InputAVCalc.coinst2);
-	InitRangeInputSection(InputAVCalc.copay2);
+	InitRangeInputSection(InputAVCalc.coinst, 100);
+	InitRangeInputSection(InputAVCalc.copay, 1);
+	InitRangeInputSection(InputAVCalc.coinst2, 100);
+	InitRangeInputSection(InputAVCalc.copay2, 1);
 
 	InitCheckBoxInput(InputAVCalc.plan, "Checkbox_Int");
 	InitCheckBoxInput(InputAVCalc.plan, "ip_per_diem");
@@ -47,30 +47,30 @@ function CalculateARV(inputParam, isDebug) {
 	InitRangeInput(InputAVCalc.TNOption, "nrTIER2_UTIL");
 
 	InitRangeInput(InputAVCalc.Tier1Plan.Medical, "nrDEDUCT_MED");
-	InitRangeInput(InputAVCalc.Tier1Plan.Medical, "nrGENCOINS_MED");
+	InitRangeInput(InputAVCalc.Tier1Plan.Medical, "nrGENCOINS_MED", 100);
 	InitRangeInput(InputAVCalc.Tier1Plan.Medical, "nrMOOP_COMBINED_SEP_DED");
 	InitRangeInput(InputAVCalc.Tier1Plan.Medical, "nrMOOP_MED");
 
 	InitRangeInput(InputAVCalc.Tier1Plan.Drug, "nrDEDUCT_RX");
-	InitRangeInput(InputAVCalc.Tier1Plan.Drug, "nrGENCOINS_RX");
+	InitRangeInput(InputAVCalc.Tier1Plan.Drug, "nrGENCOINS_RX", 100);
 	InitRangeInput(InputAVCalc.Tier1Plan.Drug, "nrMOOP_RX");
 
 	InitRangeInput(InputAVCalc.Tier1Plan.Combined, "nrDEDUCT");
-	InitRangeInput(InputAVCalc.Tier1Plan.Combined, "nrGENCOINS");
+	InitRangeInput(InputAVCalc.Tier1Plan.Combined, "nrGENCOINS", 100);
 	InitRangeInput(InputAVCalc.Tier1Plan.Combined, "nrMOOP_COMBINED");
 
 	
 	InitRangeInput(InputAVCalc.Tier2Plan.Medical, "nrDEDUCT_MED2");
-	InitRangeInput(InputAVCalc.Tier2Plan.Medical, "nrGENCOINS_MED2");
+	InitRangeInput(InputAVCalc.Tier2Plan.Medical, "nrGENCOINS_MED2", 100);
 	InitRangeInput(InputAVCalc.Tier2Plan.Medical, "nrMOOP_COMBINED_SEP_DED2");
 	InitRangeInput(InputAVCalc.Tier2Plan.Medical, "nrMOOP_MED2");		
 	
 	InitRangeInput(InputAVCalc.Tier2Plan.Drug, "nrDEDUCT_RX2");
-	InitRangeInput(InputAVCalc.Tier2Plan.Drug, "nrGENCOINS_RX2");
+	InitRangeInput(InputAVCalc.Tier2Plan.Drug, "nrGENCOINS_RX2", 100);
 	InitRangeInput(InputAVCalc.Tier2Plan.Drug, "nrMOOP_RX2");
 
 	InitRangeInput(InputAVCalc.Tier2Plan.Combined, "nrDEDUCT2");
-	InitRangeInput(InputAVCalc.Tier2Plan.Combined, "nrGENCOINS2");
+	InitRangeInput(InputAVCalc.Tier2Plan.Combined, "nrGENCOINS2", 100);
 	InitRangeInput(InputAVCalc.Tier2Plan.Combined, "nrMOOP_COMBINED2");
   
     HelperTab.Range("nrDESIRED_MTIER").Value = InputAVCalc.plan["Dropdown_tier"];
@@ -89,9 +89,10 @@ function InitCheckBoxInput(section, field) {
 	AVCalcTab.CheckBoxes(field).Value = Number(section[field]);
   }
 }
-function InitRangeInput(section, field) {
+function InitRangeInput(section, field, inPercent) {
+  var percent = (inPercent==undefined)?1:inPercent;
   if (AVCalcTab.Range(field).Value != section[field]) {
-	AVCalcTab.Range(field).Value = section[field];
+	AVCalcTab.Range(field).Value = section[field]*(1/percent);
   }
 }
 function InitDropDownInput(section, field) {
@@ -108,10 +109,10 @@ function InitCheckBoxInputSection(section) {
   }
 }
 
-function InitRangeInputSection(section) {
+function InitRangeInputSection(section, inPercent) {
   for (var i=0; i<Object.keys(section).length; i++) {
     if (AVCalcTab.Range(Object.keys(section)[i]).Value != section[Object.keys(section)[i]]) {
-	AVCalcTab.Range(Object.keys(section)[i]).Value = section[Object.keys(section)[i]];
+	AVCalcTab.Range(Object.keys(section)[i]).Value = section[Object.keys(section)[i]] * (1/inPercent);
     }
   }
 }
